@@ -1,0 +1,69 @@
+\section{Pendahuluan}
+\subsection{Latar Belakang}
+Dalam era digital saat ini, jaringan komputer menjadi fondasi utama dalam mendukung komunikasi dan pertukaran data, baik secara lokal maupun global. Keberadaan jaringan memungkinkan perangkat untuk terhubung, berbagi sumber daya, serta mengakses layanan internet dengan efisien. Praktikum Jaringan Komputer pada Modul 1 bertujuan untuk mengenalkan mahasiswa pada konsep dasar jaringan, mulai dari pengalamatan IP, konfigurasi perangkat jaringan, hingga penggunaan simulator Cisco Packet Tracer. Melalui praktikum ini, mahasiswa diharapkan mampu memahami alur komunikasi data antar perangkat, mengkonfigurasi alamat IP secara manual maupun otomatis, serta menganalisis struktur dan fungsionalitas jaringan melalui simulasi yang realistis. Pengenalan terhadap aspek-aspek ini penting sebagai bekal untuk memahami sistem jaringan berskala lebih besar yang banyak diterapkan dalam dunia industri, pendidikan, dan layanan publik.
+
+\subsection{Dasar Teori}
+Jaringan komputer adalah kumpulan perangkat yang saling terhubung untuk bertukar informasi dan berbagi sumber daya seperti data, perangkat keras, dan koneksi internet. Salah satu komponen utama dalam jaringan adalah alamat IP (Internet Protocol address), yang digunakan untuk mengidentifikasi dan mengatur komunikasi antar perangkat. Alamat IP dapat dikonfigurasi secara manual (static) maupun otomatis melalui DHCP (Dynamic Host Configuration Protocol). Subnetting merupakan teknik yang digunakan untuk membagi jaringan besar menjadi sub-jaringan kecil guna meningkatkan efisiensi dan keamanan. Selain itu, pemahaman tentang topologi jaringan, seperti topologi bus, star, dan ring, juga penting untuk menentukan cara perangkat-perangkat saling terhubung. Cisco Packet Tracer merupakan perangkat lunak simulasi jaringan yang memungkinkan pengguna membangun dan menguji konfigurasi jaringan secara virtual, sehingga sangat bermanfaat dalam proses pembelajaran dan eksperimen praktis tanpa memerlukan perangkat fisik.
+
+%===========================================================%
+\section{Tugas Pendahuluan}
+
+\begin{enumerate}
+    \item \textbf{Perencanaan IP Address dan Pembagian Subnet:} \\
+    Untuk merancang jaringan perusahaan, digunakan jaringan privat \texttt{192.168.10.0/24} dengan metode VLSM untuk efisiensi alokasi IP address. Setiap departemen mendapat alokasi subnet sesuai dengan jumlah perangkat yang dibutuhkan. Alokasi yang efisien untuk tiap departemen adalah sebagai berikut:
+    \begin{itemize}
+        \item \textbf{Departemen R\&D:}  
+        \texttt{CIDR: /25}, Rentang IP: \texttt{192.168.10.0 - 192.168.10.126}, Broadcast: \texttt{192.168.10.127}
+        \item \textbf{Departemen Produksi:}  
+        \texttt{CIDR: /26}, Rentang IP: \texttt{192.168.10.129 - 192.168.10.190}, Broadcast: \texttt{192.168.10.191}
+        \item \textbf{Departemen Administrasi:}  
+        \texttt{CIDR: /27}, Rentang IP: \texttt{192.168.10.193 - 192.168.10.222}, Broadcast: \texttt{192.168.10.223}
+        \item \textbf{Departemen Keuangan:}  
+        \texttt{CIDR: /28}, Rentang IP: \texttt{192.168.10.225 - 192.168.10.238}, Broadcast: \texttt{192.168.10.239}
+    \end{itemize}
+
+    Dengan alokasi ini, seluruh subnet menggunakan alamat IP yang efisien tanpa ada pemborosan alamat IP.
+    
+    \item \textbf{Skema Topologi Jaringan:} \\
+    Berikut adalah topologi jaringan yang menghubungkan semua departemen melalui router utama. Setiap departemen menggunakan subnet yang berbeda, dan router bertindak sebagai penghubung antar subnet.
+    
+    \begin{verbatim}
+                                    [ Router Utama ]
+                                           |
+            -------------------------------------------------------------
+            |                     |                    |               |
+       [R&D Switch]      [Produksi Switch]    [Admin Switch]   [Keuangan Switch]
+            |                     |                    |               |
+       192.168.10.0/25   192.168.10.128/26   192.168.10.192/27  192.168.10.224/28
+    \end{verbatim}
+    
+    Masing-masing subnet terhubung ke antarmuka router yang berbeda untuk memastikan komunikasi antar subnet.
+
+    \item \textbf{Tabel Routing Jaringan:} \\
+    Berikut adalah tabel routing yang merinci konfigurasi jaringan, yang menyebutkan subnet yang terhubung langsung ke router utama melalui antarmuka yang sesuai:
+    
+    \[
+    \begin{array}{|l|l|l|l|}
+    \hline
+    \textbf{Tujuan Jaringan (Network Destination)} & \textbf{Prefix CIDR} & \textbf{Gateway (Antarmuka Router)} & \textbf{Antarmuka Tujuan} \\
+    \hline
+    192.168.10.0 & /25 & - (\text{langsung terhubung}) & Gig0/0 (\text{ke R\&D}) \\
+    192.168.10.128 & /26 & - (\text{langsung terhubung}) & Gig0/1 (\text{ke Produksi}) \\
+    192.168.10.192 & /27 & - (\text{langsung terhubung}) & Gig0/2 (\text{ke Administrasi}) \\
+    192.168.10.224 & /28 & - (\text{langsung terhubung}) & Gig0/3 (\text{ke Keuangan}) \\
+    \hline
+    \end{array}
+    \]
+    
+    Tabel ini menggambarkan jaringan yang terhubung langsung ke router melalui antarmuka yang sesuai.
+
+    \item \textbf{Jenis Routing yang Tepat untuk Jaringan Ini:} \\
+    Mengingat bahwa topologi jaringan cukup sederhana, **Static Routing** adalah pilihan yang paling cocok untuk perusahaan ini. Alasan utama adalah:
+    \begin{itemize}
+        \item Jaringan hanya memiliki satu router dan empat subnet, sehingga perubahan topologi tidak sering terjadi.
+        \item Static routing lebih efisien dalam penggunaan sumber daya (CPU/memori) dan lebih aman karena tidak melibatkan protokol dinamis.
+        \item Dengan jumlah perangkat yang terbatas, konfigurasi statis lebih mudah dikelola dan tidak memerlukan overhead yang tinggi.
+    \end{itemize}
+    
+    - Alternatif untuk pengelolaan routing jika jaringan berkembang adalah menggunakan 'Dynamic Routing' dengan protokol seperti 'OSPF'. OSPF cocok untuk jaringan yang lebih besar, karena mendukung 'VLSM' dan dapat secara otomatis menyesuaikan rute berdasarkan perubahan topologi.
+\end{enumerate}
