@@ -1,0 +1,101 @@
+\section{Pendahuluan}
+\subsection{Latar Belakang}
+Jaringan komputer merupakan aspek fundamental dalam dunia teknologi informasi yang semakin berkembang, di mana pemahaman tentang jaringan menjadi sangat penting untuk memenuhi kebutuhan komunikasi yang cepat dan efisien. Praktikum ini dilaksanakan untuk memberikan pemahaman mendalam mengenai konsep dasar jaringan komputer, termasuk jenis-jenis jaringan, protokol komunikasi, serta cara menghubungkan perangkat melalui kabel dan router. Dalam era digital, hampir semua aktivitas manusia, baik dalam bisnis, pendidikan, maupun kehidupan sehari-hari, bergantung pada jaringan komputer, sehingga pemahaman yang baik tentang jaringan sangat penting untuk memfasilitasi komunikasi yang efektif dan pengelolaan data yang efisien. Selain itu, dengan memahami jaringan, individu dapat lebih baik dalam mengelola dan mengamankan data yang dikirimkan, melindungi informasi sensitif dari ancaman cyber. Keterkaitan dengan aplikasi dunia nyata sangat jelas, di mana perusahaan mengandalkan jaringan untuk menghubungkan berbagai departemen dan lokasi, meningkatkan produktivitas dan efisiensi operasional. Di lingkungan pendidikan, jaringan komputer memungkinkan akses ke sumber daya belajar secara online dan kolaborasi antar siswa. Dengan kemajuan teknologi seperti Internet of Things (IoT), pemahaman tentang jaringan komputer menjadi semakin relevan, karena banyak perangkat pintar yang terhubung melalui jaringan. Melalui praktikum ini, diharapkan peserta dapat memahami dan mengaplikasikan konsep-konsep dasar jaringan komputer serta mampu mengatasi permasalahan yang mungkin timbul dalam pengelolaan jaringan di dunia nyata.
+
+\subsection{Dasar Teori}
+Praktikum jaringan komputer didasarkan pada beberapa teori dan konsep teknis yang mendasari cara kerja jaringan serta interaksi antar perangkat. Salah satu konsep dasar adalah jaringan komputer itu sendiri, yang merupakan kumpulan perangkat yang terhubung untuk berbagi informasi dan sumber daya. Jaringan ini dapat dibedakan menjadi beberapa jenis, seperti Personal Area Network (PAN), Local Area Network (LAN), Campus Area Network (CAN), Metropolitan Area Network (MAN), dan Wide Area Network (WAN), yang masing-masing memiliki karakteristik dan jangkauan yang berbeda.
+
+Dalam jaringan komputer, protokol komunikasi berfungsi sebagai aturan yang mengatur bagaimana data dikirim dan diterima antar perangkat. Beberapa protokol penting yang akan dipelajari dalam praktikum ini meliputi Transmission Control Protocol (TCP), yang memastikan data dikirim dengan urutan yang benar dan tanpa kerusakan, serta Internet Protocol (IP), yang memberikan alamat unik untuk setiap perangkat dalam jaringan. Alamat IP ini terbagi menjadi dua jenis, yaitu Private IP Address dan Public IP Address, yang masing-masing memiliki fungsi dan penggunaan yang berbeda dalam konteks jaringan.
+
+Selain itu, pemahaman tentang subnetting dan subnet mask juga sangat penting. Subnetting adalah proses membagi jaringan besar menjadi beberapa jaringan kecil untuk meningkatkan efisiensi dan keamanan. Subnet mask digunakan untuk menentukan bagian mana dari alamat IP yang menunjukkan jaringan dan bagian mana yang menunjukkan perangkat di dalam jaringan. Konsep prefix juga terkait erat dengan subnetting, di mana prefix menunjukkan berapa banyak bit dari alamat IP yang digunakan untuk Network ID.
+
+%===========================================================%
+\section{Tugas Pendahuluan}
+
+\begin{enumerate}
+	\item \textbf{Alokasi IP Address dan Prefix (CIDR)}
+	
+	Menggunakan jaringan privat: 192.168.0.0/24
+
+	\textbf{> Departemen R\text{\&}D}
+
+Jumlah perangkat: 100
+
+Prefix CIDR: /25
+
+Alamat network: 192.168.0.0
+
+Rentang IP: 192.168.0.1 – 192.168.0.126
+
+Broadcast: 192.168.0.127
+
+\textbf{> Departemen Produksi}
+
+Jumlah perangkat: 50
+
+Prefix CIDR: /26
+
+Alamat network: 192.168.0.128
+
+Rentang IP: 192.168.0.129 – 192.168.0.190
+
+Broadcast: 192.168.0.191
+
+\textbf{> Departemen Administrasi}
+
+Jumlah perangkat: 20
+
+Prefix CIDR: /27
+
+Alamat network: 192.168.0.192
+
+Rentang IP: 192.168.0.193 – 192.168.0.222
+
+Broadcast: 192.168.0.223
+
+\textbf{> Departemen Keuangan}
+
+Jumlah perangkat: 10
+
+Prefix CIDR: /28
+
+Alamat network: 192.168.0.224
+
+Rentang IP: 192.168.0.225 – 192.168.0.238
+
+Broadcast: 192.168.0.239
+
+Total subnet yang diperlukan adalah 4 subnet, masing-masing untuk satu departemen.
+
+\item jawaban
+
+	\item Tabel Routing Sederhana
+		\begin{table}[ht]
+		\centering
+		\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		Network Destination & Netmask/Prefix 2 & Gateway & Interface Tujuan \\ \hline
+		192.168.0.0 & 255.255.255.128 (/25) & 192.168.1.1 & eth0 (R\text{\&}D) \\ \hline
+		192.168.0.128 & 255.255.255.192 (/26) & 192.168.1.1 & eth1 (Produksi) \\ \hline
+		192.168.0.192 & 255.255.255.224 (/27) & 192.168.1.1 & eth2 (Administrasi)  \\ \hline
+		192.168.0.224 & 255.255.255.240 (/28) & 192.168.1.1 & eth3 (Keuangan)  \\ \hline
+		\end{tabular}
+		\caption{Tabel routing sederhana}
+		\end{table}
+	
+	\item Jenis Routing yang paling cocok adalah Static Routing, karena:
+	
+	- Jaringan kecil (hanya 4 subnet).
+	
+	- Perubahan topologi jarang terjadi.
+	
+	- Konfigurasi sederhana dan efisien.
+	
+	- Tidak memerlukan protokol dinamis atau overhead tambahan.
+	
+	Dalam skalabilitas Dynamic Routing dapat dipertimbangkan dengan protokol seperti RIP v2 atau lebih baik OSPF, karena:
+	
+	- CIDR-aware (tidak membatasi classful).
+	
+	- OSPF mendukung skala besar dan konvergensi cepat.
+\end{enumerate}
